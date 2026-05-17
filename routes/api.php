@@ -16,11 +16,20 @@ Route::apiResource('v1/posts', ApiPostController::class)
     ->middlewareFor(['update'], ['auth:sanctum', 'abilities:posts:update'])
     ->middlewareFor(['destroy'], ['auth:sanctum', 'abilities:posts:delete']);
 
+// Routes publiques polls (pas besoin d'être connecté)
 Route::get('/v1/polls/{token}', [ApiPollController::class, 'show']);
+Route::get('/v1/polls/{token}/results', [ApiPollController::class, 'results']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/v1/foo', [ApiFooController::class, 'show']);
     Route::post('/v1/foo', [ApiFooController::class, 'store']);
+
+    // CRUD polls
     Route::get('/v1/polls', [ApiPollController::class, 'index']);
+    Route::post('/v1/polls', [ApiPollController::class, 'store']);
+    Route::put('/v1/polls/{id}', [ApiPollController::class, 'update']);
     Route::delete('/v1/polls/{id}', [ApiPollController::class, 'remove']);
+
+    // Vote (faut être connecté)
+    Route::post('/v1/polls/{token}/vote', [ApiPollController::class, 'vote']);
 });

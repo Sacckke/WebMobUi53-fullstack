@@ -5,6 +5,7 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MyProfileController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PollDashboardController;
+use App\Http\Controllers\PollVoteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TokenController;
 use App\Models\Post;
@@ -19,6 +20,9 @@ Route::get('/', function () {
 Route::get('/about', function () {
     return view('about');
 });
+
+// Page de vote publique (pas besoin d'être connecté pour la voir)
+Route::get('/polls/vote/{token}', PollVoteController::class)->name('polls.vote');
 
 Route::get('/@{username}', [ProfileController::class, 'show'])->where('username', '[A-Za-z0-9-_]+');
 

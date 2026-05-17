@@ -1,4 +1,4 @@
-<x-vue-app-layout>
+<x-default-layout>
     <x-slot:scripts>
         @vite(['resources/js/poll-dashboard.js'])
     </x-slot>
@@ -7,12 +7,13 @@
         Sondages
     </x-slot>
 
-    <div
-        id="app"
-        data-props='@json([
-            "polls" => $polls,
-            "loginUrl" => route("login"),
-            "username" => "test name"
-        ])'
-    ></div>
-</x-vue-app-layout>
+    @php
+        $dashProps = [
+            'polls'    => $polls,
+            'loginUrl' => route('login'),
+            'username' => auth()->user()->username ?? auth()->user()->name ?? '',
+        ];
+    @endphp
+
+    <div id="app" data-props='@json($dashProps)'></div>
+</x-default-layout>
